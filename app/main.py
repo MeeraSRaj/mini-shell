@@ -6,9 +6,13 @@ def main():
     while True:
         sys.stdout.write("$ ")
         command = input()
+        if command == "exit":
+            break
         if command.startswith("echo "):
             print(command[5:])
-            break
+        else:
+            print(f"{command}: command not found")
+
         pass
 
 

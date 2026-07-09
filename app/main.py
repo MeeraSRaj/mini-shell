@@ -14,7 +14,7 @@ def main():
             print(command[5:])
         elif command.startswith("type "):
             if command[5:] in BUILT_IN:
-                print(f"{command[5:]} is a built-in command")
+                print(f"{command[5:]} is a shell built-in")
             elif path := shutil.which(command[5:]):
                 print(f"{command[5:]} is {path}")
             else:

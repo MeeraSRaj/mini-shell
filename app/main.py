@@ -13,9 +13,9 @@ def main():
         if command.startswith("type "):
             if command[5:] == "echo":
                 print("echo is a shell builtin")
-            if command[5:]=="exit":
+            elif command[5:] == "exit":
                 print("exit is a shell builtin")
-            if command[5:]=="type":
+            elif command[5:] == "type":
                 print("type is a shell builtin")
             else:
                 print(f"{command[5:]}:command not found")

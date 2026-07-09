@@ -17,6 +17,8 @@ def main():
                 print("exit is a shell builtin")
             if command[5:]=="type":
                 print("type is a shell builtin")
+            else:
+                print(f"{command[5:]}:command not found")
         else:
             print(f"{command}: command not found")
 

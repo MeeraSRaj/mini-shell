@@ -24,6 +24,8 @@ def main():
             exec_path=path
             parts=command.split()
             subprocess.run(parts, executable=exec_path)
+        elif command == "pwd":
+            print(os.getcwd())
         else:
             print(f"{command}: command not found")
 

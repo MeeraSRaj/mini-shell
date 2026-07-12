@@ -16,25 +16,27 @@ def main():
         elif parts[0]=="echo":
             print(" ".join(parts[1:]))
         elif parts[0] =="type":
-            if command[5:] in BUILT_IN:
-                print(f"{command[5:]} is a shell builtin")
+            if parts[1] in BUILT_IN:
+                print(f"{parts[1]} is a shell builtin")
             elif path := shutil.which(command[5:]):
-                print(f"{command[5:]} is {path}")
+                print(f"{parts[1]} is {path}")
             else:
-                print(f"{command[5:]}: not found")
+                print(f"{parts[1]}: not found")
         elif path := shutil.which(parts[0]):
             exec_path=path
             subprocess.run(parts, executable=exec_path)
         elif command == "pwd":
             print(os.getcwd())
         elif parts[0]=="cd":
-            dir=command[3:]
+            dir=parts[1]
             if dir=="~":
                 dir=os.getenv('HOME')
             try:
                 os.chdir(dir)
             except FileNotFoundError:
                 print(f"cd: {dir}: No such file or directory")
+        elif not parts:
+            continue
         else:
             print(f"{command}: command not found")
 

@@ -3,7 +3,7 @@ import shutil
 import os
 import subprocess
 
-BUILT_IN=["exit", "echo", "type", "pwd"]
+BUILT_IN=["exit", "echo", "type", "pwd", "cd"]
 
 def main():
     while True:
@@ -26,6 +26,9 @@ def main():
             subprocess.run(parts, executable=exec_path)
         elif command == "pwd":
             print(os.getcwd())
+        elif command.startswith("cd "):
+            path=command[3:]
+            os.chdir(path)
         else:
             print(f"{command}: command not found")
 

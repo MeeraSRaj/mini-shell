@@ -3,7 +3,7 @@ import shutil
 import os
 import subprocess
 
-BUILT_IN=["exit", "echo", "type"]
+BUILT_IN=["exit", "echo", "type", "pwd"]
 
 def main():
     while True:

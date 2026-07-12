@@ -11,10 +11,10 @@ def main():
         sys.stdout.write("$ ")
         command = input()
         parts=shlex.split(command)
-        if command == "exit":
+        if parts[0] == "exit":
             break
         elif parts[0]=="echo":
-            print("".join(parts[1:]))
+            print(" ".join(parts[1:]))
         elif parts[0] =="type":
             if command[5:] in BUILT_IN:
                 print(f"{command[5:]} is a shell builtin")

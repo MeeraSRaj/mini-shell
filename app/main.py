@@ -27,10 +27,11 @@ def main():
         elif command == "pwd":
             print(os.getcwd())
         elif command.startswith("cd "):
-            if path:=shutil.which(command[3:]):
-                os.chdir(path)
-            else:
-                print(f"{command}: No such file or directory")
+            dir=command[3:]
+            try:
+                os.chdir(dir)
+            except FileNotFoundError:
+                print(f"cd: {dir}: No such fileor directory")
         else:
             print(f"{command}: command not found")
 

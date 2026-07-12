@@ -2,6 +2,7 @@ import sys
 import shutil
 import os
 import subprocess
+import shlex
 
 BUILT_IN=["exit", "echo", "type", "pwd", "cd"]
 
@@ -12,7 +13,7 @@ def main():
         if command == "exit":
             break
         elif command.startswith("echo "):
-            print(command[5:])
+            print(shlex.split(command)[1:])
         elif command.startswith("type "):
             if command[5:] in BUILT_IN:
                 print(f"{command[5:]} is a shell builtin")
@@ -20,9 +21,9 @@ def main():
                 print(f"{command[5:]} is {path}")
             else:
                 print(f"{command[5:]}: not found")
-        elif path := shutil.which(command.split()[0]):
+        elif path := shutil.which(shlex.split(command)[0]):
             exec_path=path
-            parts=command.split()
+            parts=shlex.split(command)
             subprocess.run(parts, executable=exec_path)
         elif command == "pwd":
             print(os.getcwd())

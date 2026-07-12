@@ -20,7 +20,7 @@ def main():
                 print(f"{command[5:]} is {path}")
             else:
                 print(f"{command[5:]}: not found")
-        elif path := shutil.which(command):
+        elif path := shutil.which(command.split()[0]):
             exec_path=path
             parts=command.split()
             subprocess.run([exec_path] + parts[1:])

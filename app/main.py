@@ -1,6 +1,7 @@
 import sys
 import shutil
 import os
+import subprocess
 
 BUILT_IN=["exit", "echo", "type"]
 
@@ -19,6 +20,10 @@ def main():
                 print(f"{command[5:]} is {path}")
             else:
                 print(f"{command[5:]}: not found")
+        elif path := shutil.which(command):
+            exec_path=path
+            parts=command.split()
+            subprocess.run([exec_path] + parts[1:])
         else:
             print(f"{command}: command not found")
 

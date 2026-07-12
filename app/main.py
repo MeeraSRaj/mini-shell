@@ -23,7 +23,7 @@ def main():
         elif path := shutil.which(command.split()[0]):
             exec_path=path
             parts=command.split()
-            subprocess.run([exec_path] + parts[1:])
+            subprocess.run(parts, executable=exec_path)
         else:
             print(f"{command}: command not found")
 

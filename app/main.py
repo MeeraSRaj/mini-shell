@@ -28,6 +28,8 @@ def main():
             print(os.getcwd())
         elif command.startswith("cd "):
             dir=command[3:]
+            if dir=="~":
+                dir=os.getenv('HOME')
             try:
                 os.chdir(dir)
             except FileNotFoundError:

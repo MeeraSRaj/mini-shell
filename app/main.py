@@ -28,9 +28,9 @@ def main():
         if ">>" in parts or "1>>" in parts:
             append_mode=True
             if ">>" in parts:
-                idx=parts.index(">")
+                idx=parts.index(">>")
             elif "1>>" in parts:
-                idx=parts.index("1>")
+                idx=parts.index("1>>")
             redirect_file=parts[idx+1]
             parts=parts[:idx]
         if "2>" in parts:

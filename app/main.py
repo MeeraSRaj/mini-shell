@@ -27,7 +27,7 @@ def main():
             output=" ".join(parts[1:])
             if redirect_file:
                 with open(redirect_file,"w") as f:
-                    f.write(output)
+                    f.write(output+"\n")
             else:
                 print(output)
 
@@ -36,7 +36,7 @@ def main():
                 output="f{parts[1]} is a shell builtin"
                 if redirect_file:
                     with open(redirect_file,"w") as f:
-                        f.write(output)
+                        f.write(output+"\n")
                 else:
                     print(output)
             elif path := shutil.which(command[5:]):

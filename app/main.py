@@ -17,7 +17,7 @@ def main():
             continue
 
         #Redirection
-        elif ">" in parts or "1>" in parts:
+        if ">" in parts or "1>" in parts:
             if ">" in parts:
                 idx=parts.index(">")
             elif "1>" in parts:
@@ -38,8 +38,8 @@ def main():
                 with open(redirect_file,"w") as f:
                     f.write(output+"\n")
             elif error_file:
-                with open(error_file,"w") as f:
-                    f.write(output+"\n")
+                open(error_file, "w").close()
+                print(output)
             else:
                 print(output)
 
@@ -51,11 +51,11 @@ def main():
                         f.write(output+"\n")
                 else:
                     print(output)
-            elif path := shutil.which(command[5:]):
+            elif path := shutil.which(parts[1]):
                 output=f"{parts[1]} is {path}"
                 if redirect_file:
                     with open(redirect_file,"w") as f:
-                        f.write(output)
+                        f.write(output+"\n")
                 else:
                     print(output)
             else:
@@ -66,7 +66,7 @@ def main():
                 else:
                     print(output)
 
-        elif command == "pwd":
+        elif parts[0]== "pwd":
             print(os.getcwd())
 
         elif parts[0]=="cd":

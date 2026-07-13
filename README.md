@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 [![progress-banner](https://backend.codecrafters.io/progress/shell/066199f0-3207-45bd-b768-99c89812d03a)](https://app.codecrafters.io/users/MeeraSRaj?r=2qF)
 
 This is a starting point for Python solutions to the
@@ -32,3 +33,6 @@ Note: This section is for stages 2 and beyond.
    `app/main.py`.
 1. Run `codecrafters submit` to submit your solution to CodeCrafters. Test
    output will be streamed to your terminal.
+=======
+# mini-shell
+>>>>>>> c1070ee520a1f4871781d324afdbd6f65d441921

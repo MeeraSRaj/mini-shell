@@ -39,6 +39,7 @@ def main():
             parts=parts[:idx]
 
         mode="a" if append_mode else "w"
+
         if parts[0] == "exit":
             break
         elif parts[0]=="echo":

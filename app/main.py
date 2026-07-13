@@ -37,6 +37,9 @@ def main():
             if redirect_file:
                 with open(redirect_file,"w") as f:
                     f.write(output+"\n")
+            elif error_file:
+                with open(error_file,"w") as f:
+                    f.write(output+"\n")
             else:
                 print(output)
 

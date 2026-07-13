@@ -33,14 +33,14 @@ def main():
 
         elif parts[0] =="type":
             if parts[1] in BUILT_IN:
-                output="f {parts[1]} is a shell builtin"
+                output=f"{parts[1]} is a shell builtin"
                 if redirect_file:
                     with open(redirect_file,"w") as f:
                         f.write(output+"\n")
                 else:
                     print(output)
             elif path := shutil.which(command[5:]):
-                output="f {parts[1]} is {path}"
+                output=f"{parts[1]} is {path}"
                 if redirect_file:
                     with open(redirect_file,"w") as f:
                         f.write(output)

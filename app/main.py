@@ -64,7 +64,7 @@ def main():
                 with open(redirect_file,"w") as f:
                     subprocess.run(parts, executable=exec_path,stdout=f)
             else:
-                subprocess.run(parts, executable=exec_path,stdout=f)
+                subprocess.run(parts, executable=exec_path)
         elif not parts:
             continue
         else:

@@ -9,17 +9,24 @@ BUILT_IN=["exit", "echo", "type", "pwd", "cd"]
 def main():
     while True:
         redirect_file=None
+        error_file=None
         sys.stdout.write("$ ")
         command = input()
         parts=shlex.split(command)
-        if ">" in parts:
-            idx=parts.index(">")
+
+        #Redirection
+        if ">" or "1>" in parts:
+            if ">" in parts:
+                idx=parts.index(">")
+            if "1>" in parts:
+                idx=parts.index("1>")
             redirect_file=parts[idx+1]
             parts=parts[:idx]
-        elif "1>" in parts:
-            idx=parts.index("1>")
-            redirect_file=parts[idx+1]
+        elif "2>" in parts:
+            idx=parts.index("2>")
+            error_file=parts[idx+1]
             parts=parts[:idx]
+
 
         if parts[0] == "exit":
             break
@@ -47,9 +54,16 @@ def main():
                 else:
                     print(output)
             else:
-                print(f"{parts[1]}: not found")
+                output=f"{parts[1]}: not found"
+                if error_file:
+                    with open(error_file,"w") as f:
+                        f.write(output)
+                else:
+                    print(output)
+
         elif command == "pwd":
             print(os.getcwd())
+
         elif parts[0]=="cd":
             dir=parts[1]
             if dir=="~":
@@ -57,16 +71,27 @@ def main():
             try:
                 os.chdir(dir)
             except FileNotFoundError:
-                print(f"cd: {dir}: No such file or directory")
+                output=f"cd: {dir}: No such file or directory"
+                if error_file:
+                    with open(error_file,"w") as f:
+                        f.write(output)
+                else:
+                    print(output)
+
         elif path := shutil.which(parts[0]):
             exec_path=path
             if redirect_file:
                 with open(redirect_file,"w") as f:
                     subprocess.run(parts, executable=exec_path,stdout=f)
+            if error_file:
+                with open(error_file,"w") as f:
+                    subprocess.run(parts,executable=exec_path,stderr=f)
             else:
                 subprocess.run(parts, executable=exec_path)
+
         elif not parts:
             continue
+
         else:
             print(f"{command}: command not found")
 

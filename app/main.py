@@ -3,8 +3,16 @@ import shutil
 import os
 import subprocess
 import shlex
+import readline
 
 BUILT_IN=["exit", "echo", "type", "pwd", "cd"]
+
+COMMANDS=["echo","exit"]
+def completer(text,state):
+    matches=[cmd for cmd in COMMANDS if cmd.startswith(text)]
+    if state<len(matches):
+        return matches[state]
+    return None
 
 def main():
     while True:
@@ -118,4 +126,6 @@ def main():
 
 
 if __name__ == "__main__":
+    readline.set_completer(completer)
+    readline.parse_and_bind("tab:complete")
     main()

@@ -10,6 +10,15 @@ BUILT_IN=["exit", "echo", "type", "pwd", "cd"]
 COMMANDS=["echo","exit"]
 def completer(text,state):
     matches=[cmd for cmd in COMMANDS if cmd.startswith(text)]
+    path_dirs=os.environ.get("PATH","").split(os.pathstep)
+    for directory in path_dirs:
+        if not os.path.isdir(directory):
+            continue
+        for filename in os.listdir(directory):
+            full_path=os.path.join(directory,filename)
+            if (filename.startswith(text) and os.access(full_path,os.X_OK)):
+                matches.append(filename)
+    matches=sorted(set(matches))
     if state<len(matches):
         return matches[state]+ " "
     return None

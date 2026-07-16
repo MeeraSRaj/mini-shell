@@ -10,7 +10,7 @@ BUILT_IN=["exit", "echo", "type", "pwd", "cd"]
 COMMANDS=["echo","exit"]
 def completer(text,state):
     matches=[cmd for cmd in COMMANDS if cmd.startswith(text)]
-    path_dirs=os.environ.get("PATH","").split(os.pathstep)
+    path_dirs=os.environ.get("PATH","").split(os.pathsep)
     for directory in path_dirs:
         if not os.path.isdir(directory):
             continue
@@ -136,5 +136,5 @@ def main():
 
 if __name__ == "__main__":
     readline.set_completer(completer)
-    readline.parse_and_bind("tab:complete")
+    readline.parse_and_bind("TAB: complete")
     main()

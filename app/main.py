@@ -36,6 +36,7 @@ def completer(text,state):
             sys.stdout.flush()
             return None
         elif tab_count==2:
+            sys.stdout.write("\n")
             print("  ".join(matches))
             tab_count=0
             sys.stdout.write("$ "+text)

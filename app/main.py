@@ -6,9 +6,18 @@ import shlex
 import readline
 
 BUILT_IN=["exit", "echo", "type", "pwd", "cd"]
-
 COMMANDS=["echo","exit"]
+
+last_text=""
+tab_count=0
+
 def completer(text,state):
+    global last_text,tab_count
+    if last_text==text:
+        tab_count+=1
+    else:
+        last_text=text
+        tab_count=1
     matches=[cmd for cmd in COMMANDS if cmd.startswith(text)]
     path_dirs=os.environ.get("PATH","").split(os.pathsep)
     for directory in path_dirs:
@@ -19,9 +28,19 @@ def completer(text,state):
             if (filename.startswith(text) and os.access(full_path,os.X_OK)):
                 matches.append(filename)
     matches=sorted(set(matches))
-    if state<len(matches):
-        return matches[state]+ " "
-    return None
+    if len(matches)==0: return None
+    elif len(matches)==1: return matches[0]+" "
+    elif len(matches)>1:
+        if tab_count==1:
+            sys.stdout.write("\x07")
+            sys.stdout.flush()
+            return None
+        elif tab_count==2:
+            print("  ".join(matches))
+            tab_count=0
+            sys.stdout.write("$ "+text)
+            sys.stdout.flush()
+            return None
 
 def main():
     while True:

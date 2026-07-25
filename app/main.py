@@ -29,7 +29,10 @@ def completer(text,state):
                 matches.append(filename)
     matches=sorted(set(matches))
     if len(matches)==0: return None
-    elif len(matches)==1: return matches[0]+" "
+    elif len(matches)==1: 
+        if state==0:
+            return matches[0]+" "
+        return None
     elif len(matches)>1:
         if tab_count==1:
             sys.stdout.write("\x07")

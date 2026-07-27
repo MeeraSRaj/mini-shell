@@ -41,22 +41,26 @@ def completer(text,state):
         if state==0:
             return matches[0][len(text):] + " "
         return None
-    elif len(matches)>1:
+    elif len(matches) > 1:
         prefix = longest_common_prefix(matches)
-        if prefix!=text:
-            return prefix[len(text):]+" "
-        if tab_count==1:
+
+        if prefix != text:
+            if state == 0:
+                return prefix[len(text):]
+            return None
+
+        if tab_count == 1:
             sys.stdout.write("\x07")
             sys.stdout.flush()
             return None
-        elif tab_count==2:
+
+        elif tab_count == 2:
             sys.stdout.write("\n")
             print("  ".join(matches))
-            tab_count=0
-            sys.stdout.write("$ "+text)
+            tab_count = 0
+            sys.stdout.write("$ " + text)
             sys.stdout.flush()
             return None
-
 def main():
     while True:
         redirect_file=None

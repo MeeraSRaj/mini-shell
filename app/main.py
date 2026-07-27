@@ -11,6 +11,14 @@ COMMANDS=["echo","exit"]
 last_text=""
 tab_count=0
 
+def longest_common_prefix(matches):
+    prefix=matches[0]
+
+    for word in matches[1:]:
+        while not word.startswith(prefix):
+            prefix=prefix[:-1]
+    return prefix
+
 def completer(text,state):
     global last_text,tab_count
     if last_text==text:
@@ -31,9 +39,12 @@ def completer(text,state):
     if len(matches)==0: return None
     elif len(matches)==1: 
         if state==0:
-            return matches[0]+" "
+            return matches[0][len(text):] + " "
         return None
     elif len(matches)>1:
+        prefix = longest_common_prefix(matches)
+        if prefix!=text:
+            prefix[len(text):]+" "
         if tab_count==1:
             sys.stdout.write("\x07")
             sys.stdout.flush()

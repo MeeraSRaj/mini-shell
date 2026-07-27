@@ -39,14 +39,14 @@ def completer(text,state):
     if len(matches)==0: return None
     elif len(matches)==1: 
         if state==0:
-            return matches[0][len(text):] + " "
+            return matches[0]+" "
         return None
     elif len(matches) > 1:
         prefix = longest_common_prefix(matches)
 
         if prefix != text:
             if state == 0:
-                return prefix[len(text):]
+                return prefix
             return None
 
         if tab_count == 1:

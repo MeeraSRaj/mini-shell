@@ -44,7 +44,7 @@ def completer(text,state):
     elif len(matches)>1:
         prefix = longest_common_prefix(matches)
         if prefix!=text:
-            prefix[len(text):]+" "
+            return prefix[len(text):]+" "
         if tab_count==1:
             sys.stdout.write("\x07")
             sys.stdout.flush()

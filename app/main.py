@@ -36,6 +36,12 @@ def completer(text,state):
             if (filename.startswith(text) and os.access(full_path,os.X_OK)):
                 matches.append(filename)
     matches=sorted(set(matches))
+
+    if not matches:
+        for filename in os.listdir("."):
+            if filename.startswith(text):
+                matches.append(filename)
+
     if len(matches)==0: return None
     elif len(matches)==1: 
         if state==0:
@@ -61,6 +67,7 @@ def completer(text,state):
             sys.stdout.write("$ " + text)
             sys.stdout.flush()
             return None
+
 def main():
     while True:
         redirect_file=None

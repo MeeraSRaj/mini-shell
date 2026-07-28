@@ -35,13 +35,14 @@ def completer(text,state):
             full_path=os.path.join(directory,filename)
             if (filename.startswith(text) and os.access(full_path,os.X_OK)):
                 matches.append(filename)
-    matches=sorted(set(matches))
+
 
     if not matches:
         for filename in os.listdir("."):
             if filename.startswith(text):
                 matches.append(filename)
-
+    matches=sorted(set(matches))
+    
     if len(matches)==0: return None
     elif len(matches)==1: 
         if state==0:

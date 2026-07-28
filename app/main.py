@@ -26,6 +26,7 @@ def completer(text,state):
     else:
         last_text=text
         tab_count=1
+
     matches=[cmd for cmd in COMMANDS if cmd.startswith(text)]
     path_dirs=os.environ.get("PATH","").split(os.pathsep)
     for directory in path_dirs:
@@ -41,8 +42,8 @@ def completer(text,state):
         for filename in os.listdir("."):
             if filename.startswith(text):
                 matches.append(filename)
+
     matches=sorted(set(matches))
-    
     if len(matches)==0: return None
     elif len(matches)==1: 
         if state==0:
@@ -182,5 +183,6 @@ def main():
 
 if __name__ == "__main__":
     readline.set_completer(completer)
+    readline.ste_completer_delimits(" \t\n")
     readline.parse_and_bind("TAB: complete")
     main()

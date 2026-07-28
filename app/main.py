@@ -39,7 +39,10 @@ def completer(text,state):
 
 
     if not matches:
-        for filename in os.listdir("."):
+        directory="."
+        if "/" in text:
+            directory,prefix=text.rsplit("/",1)
+        for filename in os.listdir(directory):
             if filename.startswith(text):
                 matches.append(filename)
 

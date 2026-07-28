@@ -42,9 +42,16 @@ def completer(text,state):
         directory="."
         if "/" in text:
             directory,prefix=text.rsplit("/",1)
-        for filename in os.listdir(directory):
-            if filename.startswith(text):
-                matches.append(filename)
+            try:
+                for filename in os.listdir(directory):
+                    if filename.startswith(prefix):
+                        matches.append(os.path.join(directory,filename))
+            except FileNotFoundError:
+                pass
+        else:
+            for filename in os.listdir(directory):
+                if filename.startswith(text):
+                    matches.append(filename)
 
     matches=sorted(set(matches))
     if len(matches)==0: return None

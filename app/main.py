@@ -183,6 +183,6 @@ def main():
 
 if __name__ == "__main__":
     readline.set_completer(completer)
-    readline.ste_completer_delimits(" \t\n")
+    readline.set_completer_delimits(" \t\n")
     readline.parse_and_bind("TAB: complete")
     main()

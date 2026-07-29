@@ -29,7 +29,7 @@ def completer(text,state):
         last_text=text
         tab_count=1
     if " " not in line:
-        matches.extend([cmd for cmd in COMMANDS if cmd.startswith(text))
+        matches.extend(cmd for cmd in COMMANDS if cmd.startswith(text))
         path_dirs=os.environ.get("PATH","").split(os.pathsep)
         for directory in path_dirs:
             if not os.path.isdir(directory):

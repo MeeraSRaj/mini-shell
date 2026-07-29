@@ -55,9 +55,15 @@ def completer(text,state):
 
     matches=sorted(set(matches))
     if len(matches)==0: return None
-    elif len(matches)==1: 
-        if state==0:
-            return matches[0]+" "
+    elif len(matches) == 1:
+        if state == 0:
+            match = matches[0]
+
+            if os.path.isdir(match):
+                return match + "/"
+
+            return match + " "
+
         return None
     elif len(matches) > 1:
         prefix = longest_common_prefix(matches)

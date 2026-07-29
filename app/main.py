@@ -21,21 +21,23 @@ def longest_common_prefix(matches):
 
 def completer(text,state):
     global last_text,tab_count
+    line = readline.get_line_buffer()
+
     if last_text==text:
         tab_count+=1
     else:
         last_text=text
         tab_count=1
-
-    matches=[cmd for cmd in COMMANDS if cmd.startswith(text)]
-    path_dirs=os.environ.get("PATH","").split(os.pathsep)
-    for directory in path_dirs:
-        if not os.path.isdir(directory):
-            continue
-        for filename in os.listdir(directory):
-            full_path=os.path.join(directory,filename)
-            if (filename.startswith(text) and os.access(full_path,os.X_OK)):
-                matches.append(filename)
+    if " " not in line:
+        matches=[cmd for cmd in COMMANDS if cmd.startswith(text)]
+        path_dirs=os.environ.get("PATH","").split(os.pathsep)
+        for directory in path_dirs:
+            if not os.path.isdir(directory):
+                continue
+            for filename in os.listdir(directory):
+                full_path=os.path.join(directory,filename)
+                if (filename.startswith(text) and os.access(full_path,os.X_OK)):
+                    matches.append(filename)
 
 
     if not matches:

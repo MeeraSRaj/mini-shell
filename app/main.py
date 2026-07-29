@@ -26,6 +26,7 @@ def completer(text,state):
     else:
         last_text=text
         tab_count=1
+
     matches=[cmd for cmd in COMMANDS if cmd.startswith(text)]
     path_dirs=os.environ.get("PATH","").split(os.pathsep)
     for directory in path_dirs:
@@ -35,6 +36,23 @@ def completer(text,state):
             full_path=os.path.join(directory,filename)
             if (filename.startswith(text) and os.access(full_path,os.X_OK)):
                 matches.append(filename)
+
+
+    if not matches:
+        directory="."
+        if "/" in text:
+            directory,prefix=text.rsplit("/",1)
+            try:
+                for filename in os.listdir(directory):
+                    if filename.startswith(prefix):
+                        matches.append(os.path.join(directory,filename))
+            except FileNotFoundError:
+                pass
+        else:
+            for filename in os.listdir(directory):
+                if filename.startswith(text):
+                    matches.append(filename)
+
     matches=sorted(set(matches))
     if len(matches)==0: return None
     elif len(matches) == 1:
@@ -67,6 +85,7 @@ def completer(text,state):
             sys.stdout.write("$ " + text)
             sys.stdout.flush()
             return None
+
 def main():
     while True:
         redirect_file=None
@@ -180,5 +199,6 @@ def main():
 
 if __name__ == "__main__":
     readline.set_completer(completer)
+    readline.set_completer_delims(" \t\n")
     readline.parse_and_bind("TAB: complete")
     main()

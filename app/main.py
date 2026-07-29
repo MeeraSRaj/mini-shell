@@ -20,6 +20,8 @@ def longest_common_prefix(matches):
     return prefix
 
 def completer(text,state):
+    with open("debug.txt", "w") as f:
+        f.write(f"line={readline.get_line_buffer()!r}, text={text!r}, state={state}\n")
     global last_text,tab_count
     line = readline.get_line_buffer()
     matches=[]
@@ -38,7 +40,7 @@ def completer(text,state):
                 full_path=os.path.join(directory,filename)
                 if (filename.startswith(text) and os.access(full_path,os.X_OK)):
                     matches.append(filename)
-    if line.endswith(" "):
+    else:
         directory = "."
         prefix = text
 
@@ -51,7 +53,8 @@ def completer(text,state):
                     matches.append(os.path.join(directory, filename) if directory != "." else filename)
         except FileNotFoundError:
             pass
-
+    with open("debug1.txt", "w") as f:
+        f.write(f"matches before sort = {matches}\n")
     matches=sorted(set(matches))
     if len(matches)==0: return None
     elif len(matches) == 1:

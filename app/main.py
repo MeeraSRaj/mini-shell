@@ -22,14 +22,14 @@ def longest_common_prefix(matches):
 def completer(text,state):
     global last_text,tab_count
     line = readline.get_line_buffer()
-
+    matches=[]
     if last_text==text:
         tab_count+=1
     else:
         last_text=text
         tab_count=1
     if " " not in line:
-        matches=[cmd for cmd in COMMANDS if cmd.startswith(text)]
+        matches.extend([cmd for cmd in COMMANDS if cmd.startswith(text))
         path_dirs=os.environ.get("PATH","").split(os.pathsep)
         for directory in path_dirs:
             if not os.path.isdir(directory):
@@ -38,22 +38,19 @@ def completer(text,state):
                 full_path=os.path.join(directory,filename)
                 if (filename.startswith(text) and os.access(full_path,os.X_OK)):
                     matches.append(filename)
+    if line.endswith(" "):
+        directory = "."
+        prefix = text
 
-
-    if not matches:
-        directory="."
         if "/" in text:
-            directory,prefix=text.rsplit("/",1)
-            try:
-                for filename in os.listdir(directory):
-                    if filename.startswith(prefix):
-                        matches.append(os.path.join(directory,filename))
-            except FileNotFoundError:
-                pass
-        else:
+            directory, prefix = text.rsplit("/", 1)
+
+        try:
             for filename in os.listdir(directory):
-                if filename.startswith(text):
-                    matches.append(filename)
+                if filename.startswith(prefix):
+                    matches.append(os.path.join(directory, filename) if directory != "." else filename)
+        except FileNotFoundError:
+            pass
 
     matches=sorted(set(matches))
     if len(matches)==0: return None

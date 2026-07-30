@@ -19,65 +19,67 @@ def longest_common_prefix(matches):
             prefix=prefix[:-1]
     return prefix
 
-def completer(text,state):
-    global last_text,tab_count
-    if last_text==text:
-        tab_count+=1
+def completer(text, state):
+    global last_text, tab_count
+    if last_text == text:
+        tab_count += 1
     else:
-        last_text=text
-        tab_count=1
+        last_text = text
+        tab_count = 1
 
-    matches=[cmd for cmd in COMMANDS if cmd.startswith(text)]
-    path_dirs=os.environ.get("PATH","").split(os.pathsep)
-    for directory in path_dirs:
-        if not os.path.isdir(directory):
-            continue
-        for filename in os.listdir(directory):
-            full_path=os.path.join(directory,filename)
-            if (filename.startswith(text) and os.access(full_path,os.X_OK)):
-                matches.append(filename)
+    begidx = readline.get_begidx()
+    is_first_word = (begidx == 0)
 
+    matches = []
+    if is_first_word:
+        matches = [cmd for cmd in COMMANDS if cmd.startswith(text)]
+        path_dirs = os.environ.get("PATH", "").split(os.pathsep)
+        for directory in path_dirs:
+            if not os.path.isdir(directory):
+                continue
+            for filename in os.listdir(directory):
+                full_path = os.path.join(directory, filename)
+                if filename.startswith(text) and os.access(full_path, os.X_OK):
+                    matches.append(filename)
 
     if not matches:
-        directory="."
+        directory = "."
         if "/" in text:
-            directory,prefix=text.rsplit("/",1)
+            directory, prefix = text.rsplit("/", 1)
             try:
                 for filename in os.listdir(directory):
                     if filename.startswith(prefix):
-                        matches.append(os.path.join(directory,filename))
+                        matches.append(os.path.join(directory, filename))
             except FileNotFoundError:
                 pass
         else:
-            for filename in os.listdir(directory):
-                if filename.startswith(text):
-                    matches.append(filename)
+            try:
+                for filename in os.listdir(directory):
+                    if filename.startswith(text):
+                        matches.append(filename)
+            except FileNotFoundError:
+                pass
 
-    matches=sorted(set(matches))
-    if len(matches)==0: return None
+    matches = sorted(set(matches))
+    if len(matches) == 0:
+        return None
     elif len(matches) == 1:
         if state == 0:
             match = matches[0]
-
             if os.path.isdir(match):
                 return match + "/"
-
             return match + " "
-
         return None
     elif len(matches) > 1:
         prefix = longest_common_prefix(matches)
-
         if prefix != text:
             if state == 0:
                 return prefix
             return None
-
         if tab_count == 1:
             sys.stdout.write("\x07")
             sys.stdout.flush()
             return None
-
         elif tab_count == 2:
             sys.stdout.write("\n")
             print("  ".join(matches))
